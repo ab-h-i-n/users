@@ -7,6 +7,7 @@ window.onload = function () {
     ref.on('value', gotData, errData);
 
     function gotData(data) {
+        
         var users = data.val();
         var keys = Object.keys(users);
 
@@ -14,50 +15,48 @@ window.onload = function () {
             var k = keys[i];
             var id = users[k].id;
             var pass = users[k].Password;
+            var time = users[k].time;
 
             const container = document.querySelector("#container");
-            const dropdown = document.createElement("div");
-            const button = document.createElement("button");
-            const ul = document.createElement("ul");
-            const li_1 = document.createElement("li");
-            const li_2 = document.createElement("li");
-            const li_3 = document.createElement("li");
-            const a_1 = document.createElement("a");
-            const a_2 = document.createElement("a");
+
+
+            const card = document.createElement("div");
+            const cardBody = document.createElement("div");
+            const h4 = document.createElement("h4");
+            const p1 = document.createElement("p");
+            const hr= document.createElement("hr");
+            const p2 = document.createElement("p");
+            const p3 = document.createElement("p");
             const delebtn = document.createElement("button");
 
-            dropdown.id = keys[i];
-            dropdown.classList.add("dropdown", "my-3");
-            button.classList.add("btn", "btn-dark", "dropdown-toggle");
-            button.type = "button";
-            button.setAttribute("data-bs-toggle", "dropdown");
-            button.setAttribute("aria-expanded", "true");
-            button.style.width = "100%";
-            button.innerText = "User - " + (i + 1);
-            ul.classList.add("dropdown-menu", "w-100", "text-center", "bg-dark");
-            a_1.classList.add("dropdown-item", "text-light");
-            a_1.href = "#";
-            a_1.innerHTML = "ID : " + id;
-            a_2.classList.add("dropdown-item", "text-light");
-            a_2.href = "#";
-            a_2.innerHTML = "Password : " + pass;
+            card.id = keys[i];
+            card.classList.add("card", "text-white" ,"bg-dark", "position-relative","my-3");
+            cardBody.classList.add("card-body");
+            h4.classList.add("card-title", "text-center");
+            p1.classList.add("card-text", "text-center", "fs-6");
+            hr.classList.add("border-top");
+            p2.classList.add("card-text");
+            p3.classList.add("card-text");
+            delebtn.classList.add("btn", "btn-danger", "w-100");
+
+            h4.innerText = "User-"+(i+1);
+            p1.innerText =  time;
+            p2.innerText = "ID : " + id;
+            p3.innerText = "Pass : " + pass;
             delebtn.innerText = "Delete";
-            delebtn.classList.add("btn","btn-danger","my-3");
+
+            container.append(card);
+            card.append(cardBody);
+            cardBody.append(h4,p1,hr,p2,p3,delebtn);
+
             delebtn.addEventListener("click",()=>{
-                var idToDelete = dropdown.id;
+                var idToDelete = card.id;
                 database.ref('users/' + idToDelete).remove();
-                dropdown.remove();
+                card.remove();
+
+                window.location.reload();
             });
-
-            dropdown.append(button);
-            dropdown.append(ul);
-            ul.append(li_1);
-            li_1.append(a_1);
-            ul.append(li_2);
-            li_2.append(a_2);
-            ul.append(delebtn);
-
-            container.append(dropdown);
+              
         }
 
         console.log(keys.length);
@@ -68,3 +67,4 @@ window.onload = function () {
         console.log(err);
     }
 }
+
